@@ -226,4 +226,8 @@ public final class Constants {
         kMaxAngularVelocityRadiansPerSecond, kMaxAngularAccelerationRadiansPerSecondSquared);
 
   }
+
+  public static final class kIntake {
+    public static final double OUTPUT_CURRENT_THRESHOLD = 20;
+  }
 }

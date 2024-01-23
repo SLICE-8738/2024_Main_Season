@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -48,6 +49,11 @@ public class SpinIntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //ends the command if the output current is greater than or equal to the threshold, the output current could increase when a note is in the intake
+    if (Constants.kIntake.OUTPUT_CURRENT_THRESHOLD <= m_intake.getOutputCurrent()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
