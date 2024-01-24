@@ -14,6 +14,7 @@ import frc.robot.subsystems.Shooter;
 public class SpinIntakeCommand extends Command {
   private final Intake m_intake;
   private final Shooter m_shooter;
+  private boolean note;
   /** Creates a new SpinIntakeCommand. */
   public SpinIntakeCommand(Intake intake, Shooter shooter) {
     m_intake = intake;
@@ -21,15 +22,19 @@ public class SpinIntakeCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
-
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_intake.runIntake(0.5);
+
+
+
+
   }
 
   // Called once the command ends or is interrupted.
@@ -43,11 +48,22 @@ public class SpinIntakeCommand extends Command {
       // If it isn't, stop all motors to wait for the shooter to be stowed
       m_intake.runIntake(0);
     }
+
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
+
+  if (note && !m_intake.isStoredIntake()) {
+    return true;
+
+  } else {
+    note = m_intake.isStoredIntake();
     return false;
   }
+}
+
 }
