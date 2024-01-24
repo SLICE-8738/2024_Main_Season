@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 /** Contains and runs all code needed to display all necessary information on Shuffleboard.*/
 public class ShuffleboardData {
 
     private final ShuffleboardTab driverTab, debugTab, modulesTab, autoTab;
 
-    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer) {
+    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer, Intake intake, Shooter shooter) {
 
         driverTab = Shuffleboard.getTab("Driver Tab");
         debugTab = Shuffleboard.getTab("Debug Tab");
@@ -29,6 +31,8 @@ public class ShuffleboardData {
         new DrivetrainData(drivetrain);
         new AutoData(autoSelector);
         new IndexerData(indexer);
+        new IntakeData(intake);
+        new ShooterData(shooter);
     }
 
     public class DrivetrainData {
@@ -104,12 +108,12 @@ public class ShuffleboardData {
             debugTab.addDouble("Drivetrain Roll", drivetrain::getRoll).
             withWidget(BuiltInWidgets.kDial).
             withProperties(Map.of("Min", -180, "Max", 180)).
-            withPosition(7, 0).
+            withPosition(0, 1).
             withSize(2, 1);
                 
             //Displays the current position of the robot on the field on Shuffleboard
             debugTab.add(drivetrain.m_field2d).
-            withPosition(3, 2).
+            withPosition(2, 2).
             withSize(3, 2);
         
             //Displays the feed from the USB camera on Shuffleboard
@@ -167,10 +171,39 @@ public class ShuffleboardData {
         public IndexerData(Indexer indexer) {
             //Displays the laserCan distance from the laser to an object on Shuffleboard
             debugTab.addDouble("LaserCAN Distance:", () -> indexer.getLaserCanDistance()).
-            withPosition(7,2).
+            withPosition(7,0).
             withSize(2,1);
+            //Displays if the note is stored in the robot on Shuffleboard
+            debugTab.addBoolean("Note Stored:", () -> indexer.isStored()).
+            withPosition(7,1).
+            withSize(2,1);
+        }
+    }
+
+    public class IntakeData {
+
+        public IntakeData(Intake intake) {
+            //Displays the output current on Shuffleboard
+            debugTab.addDouble("Output Current", () -> intake.getOutputCurrent()).
+            withPosition(5, 0).
+            withSize(2, 1);
 
         }
     }
 
+    public class ShooterData {
+
+        public ShooterData(Shooter shooter) {
+            
+            //Displays if robot is at target speed on Shuffleboard
+            debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(5.0)).
+            withPosition(9,1).
+            withSize(2,1);
+
+            //Displays flywheel speed on Shuffleboard
+            debugTab.addDouble("Flywheel Speed:", () -> shooter.getSpeed()).
+            withPosition(9, 0).
+            withSize(2,1);
+        }
+    }
 }
