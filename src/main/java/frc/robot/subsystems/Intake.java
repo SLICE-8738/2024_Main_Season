@@ -23,12 +23,14 @@ import au.grapplerobotics.LaserCan.TimingBudget;
 public class Intake extends SubsystemBase {
   private CANSparkMax intakeEntrance, intakeRamp;
   public LaserCan intakeLaser;
+  private Limelight limelight;
+
   /** Creates a new Intake. */
   public Intake() {
     intakeLaser = new LaserCan(0);
     this.intakeEntrance = new CANSparkMax(0, MotorType.kBrushless);
     this.intakeRamp = new CANSparkMax(0, MotorType.kBrushless);
-
+    limelight = new Limelight("PLACEHOLDER!"); // !!! PLACEHOLDER VALUE !!!
 
     try {
       intakeLaser.setRangingMode(RangingMode.SHORT); //sets ranging mode to short distance, which is more accurate
@@ -73,6 +75,21 @@ public class Intake extends SubsystemBase {
       //returns the distance from the laserCAN in millimeters
       return intakeLaser.getMeasurement().distance_mm;
     }
+
+  /**
+   * This function changes the speed of the intake if a game piece is detected.
+   * @param speed Speed to set the intake to.
+   */
+  public void intakeSpeedIncrease(double normalSpeed, double fastSpeed){
+    if (limelight.getTargetDetected()){ // If the piece is detected, increase speed.
+      runIntake(fastSpeed); 
+    } 
+    else { // Otherwise, run at the normal speed.
+      runIntake(normalSpeed);  
+    } 
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

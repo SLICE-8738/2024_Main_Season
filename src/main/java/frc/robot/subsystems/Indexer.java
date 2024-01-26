@@ -45,14 +45,32 @@ public class Indexer extends SubsystemBase {
   }
 
   
-  /** Method that checks if a note is at the high index motor */
-  public boolean isStored() {
+  /**
+   * Checks if the note is at least partially in the high index motor.
+   * @return
+   */
+  public boolean isStoredPartially() {
     //checks if the laserCan distance is more than 177.9 millimeters or less than 177.9 millimeters
      if (getLaserCanDistance() <= 177.8) {
       //if the laserCAN distance is less than 177.9 millimeters, returns true and there is a note at the high index motor
       return true;
      } else {
       //if the laserCAN distance is more than 177.9 millimeters, returns false and there is no note at the high index motor
+      return false;
+     }
+  }
+
+  /**
+   * Checks if the note is completely in the high index motor.
+   * @return
+   */
+  public boolean isStoredFully() {
+    //checks if the laserCan distance is more than 6.35 millimeters or less than 6.35 millimeters
+     if (getLaserCanDistance() <= 6.35) {
+      //if the laserCAN distance is less than 6.35 millimeters, returns true and there is a note at the high index motor
+      return true;
+     } else {
+      //if the laserCAN distance is more than 6.35 millimeters, returns false and there is no note at the high index motor
       return false;
      }
   }

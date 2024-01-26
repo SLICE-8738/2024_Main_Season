@@ -35,8 +35,16 @@ public class StoreNote extends Command {
   public void execute() {
     //spins the motors
 
-    indexer.spinIndex(.5);
-    intake.runRampIntakeOnly(.5);
+    double spinSpeed = 0.5; // Full speed of the indexer
+
+    if (indexer.isStoredPartially()){ // If the piece is partially in the indexer...
+      spinSpeed = 0.25; // ...go slower.
+    }
+
+    // Spin indexer at the correct speed.
+    indexer.spinIndex(spinSpeed); 
+    intake.runRampIntakeOnly(spinSpeed);
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -52,7 +60,7 @@ public class StoreNote extends Command {
   @Override
   public boolean isFinished() {
     //ends the command
-    if (indexer.isStored()) {
+    if (indexer.isStoredFully()) {
       return true; //ends the command if stored is true (stored is a constructor in indexer)
     } else {
       return false;

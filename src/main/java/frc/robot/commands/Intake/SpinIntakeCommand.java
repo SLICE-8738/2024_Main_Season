@@ -12,6 +12,8 @@ import frc.robot.subsystems.Shooter;
  * Runs the intake wheels (including the vectoring ramp wheels) in order to pick up a note from the ground
  */
 public class SpinIntakeCommand extends Command {
+  private final double normalSpeed = 0.5; // Normal speed for the intake
+  private final double fastSpeed = 1.0; // Fast speed for the intake
   private final Intake m_intake;
   private final Shooter m_shooter;
   private boolean note;
@@ -30,7 +32,7 @@ public class SpinIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.runIntake(0.5);
+    m_intake.intakeSpeedIncrease(normalSpeed, fastSpeed);
 
 
 
