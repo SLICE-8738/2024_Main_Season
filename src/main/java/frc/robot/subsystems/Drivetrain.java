@@ -607,4 +607,8 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  public Pose2d getRobotTargetSpace() {
+    return drivetrainLimelight.getRobotTargetSpacePose();
+  }
+
 }
