@@ -52,6 +52,7 @@ public final class Constants {
 
     // Flywheel Speed
     public static final double FLYWHEEL_RPM = 60;
+    public static final double ERROR_THRESHOLD = 5;
 
     // Stow Angle for picking up game pieces
     public static final double SHOOTER_STOW_ANGLE = 0;
@@ -59,6 +60,7 @@ public final class Constants {
 
   public static final class kElevator {
     public static final double CLIMB_HEIGHT = 0.5;
+    public static final double ERROR_THRESHHOLD = 0.5;
   }
 
   public static final class kDrivetrain {

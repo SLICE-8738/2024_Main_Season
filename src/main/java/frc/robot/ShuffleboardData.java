@@ -13,13 +13,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shooter;
 /** Contains and runs all code needed to display all necessary information on Shuffleboard.*/
 public class ShuffleboardData {
 
     private final ShuffleboardTab driverTab, debugTab, modulesTab, autoTab;
 
-    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer) {
+    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer, Elevator elevator, Shooter shooter) {
 
         driverTab = Shuffleboard.getTab("Driver Tab");
         debugTab = Shuffleboard.getTab("Debug Tab");
@@ -29,6 +31,8 @@ public class ShuffleboardData {
         new DrivetrainData(drivetrain);
         new AutoData(autoSelector);
         new IndexerData(indexer);
+        new ElevatorData(elevator);
+        new ShooterData(shooter);
     }
 
     public class DrivetrainData {
@@ -104,12 +108,12 @@ public class ShuffleboardData {
             debugTab.addDouble("Drivetrain Roll", drivetrain::getRoll).
             withWidget(BuiltInWidgets.kDial).
             withProperties(Map.of("Min", -180, "Max", 180)).
-            withPosition(7, 0).
+            withPosition(0, 1).
             withSize(2, 1);
                 
             //Displays the current position of the robot on the field on Shuffleboard
             debugTab.add(drivetrain.m_field2d).
-            withPosition(3, 2).
+            withPosition(2, 2).
             withSize(3, 2);
         
             //Displays the feed from the USB camera on Shuffleboard
@@ -167,10 +171,37 @@ public class ShuffleboardData {
         public IndexerData(Indexer indexer) {
             //Displays the laserCan distance from the laser to an object on Shuffleboard
             debugTab.addDouble("LaserCAN Distance:", () -> indexer.getLaserCanDistance()).
-            withPosition(7,2).
+            withPosition(7,0).
             withSize(2,1);
-
+            //Displays if indexer has a note
+            debugTab.addBoolean("Is Stored:", () -> indexer.isStored()).
+            withPosition(7, 1).
+            withSize(2, 1);
         }
     }
 
+    public class ElevatorData{
+        public ElevatorData(Elevator elevator){
+            //Displays the position of the elevator
+            debugTab.addDouble("Elevator Position:", () -> elevator.getPosition()).
+            withPosition(5, 2).
+            withSize(2,1);
+            //Displays if elevator is at target position
+            debugTab.addBoolean("Elevator at Position:", () -> elevator.atTarget(Constants.kElevator.ERROR_THRESHHOLD)).
+            withPosition(5, 3).
+            withSize(2,1);
+        }
+    }
+    
+    public class ShooterData{
+        public ShooterData(Shooter shooter){
+            debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
+            withPosition(9,0).
+            withSize(2,1);
+
+            debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
+            withPosition(9,1).
+            withSize(2, 1);
+        }
+    }
 }
