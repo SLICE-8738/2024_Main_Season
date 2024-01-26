@@ -65,7 +65,6 @@ public class Indexer extends SubsystemBase {
     //returns the distance from the laserCAN in millimeters
     return laser.getMeasurement().distance_mm;
   }
-
   
 
   @Override
