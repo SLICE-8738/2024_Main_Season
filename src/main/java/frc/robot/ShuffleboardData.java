@@ -195,10 +195,12 @@ public class ShuffleboardData {
     
     public class ShooterData{
         public ShooterData(Shooter shooter){
+            //Displays Flywheel speed
             debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
             withPosition(9,0).
             withSize(2,1);
-
+            
+            //Displays if the flywheels are at the target speed
             debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
             withPosition(9,1).
             withSize(2, 1);
