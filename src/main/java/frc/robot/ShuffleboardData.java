@@ -30,6 +30,7 @@ public class ShuffleboardData {
         new DrivetrainData(drivetrain);
         new AutoData(autoSelector);
         new IndexerData(indexer);
+        new ShooterData(shooter);
     }
 
     public class DrivetrainData {

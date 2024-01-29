@@ -89,7 +89,7 @@ public class Shooter extends SubsystemBase {
    * @param acceptableError The acceptable error that the flywheel's speed may be in.
    * @return True if at the correct speed, false otherwise.
    */
-  public boolean detectFlywheelSpeed(double acceptableError){
+  public boolean atTargetSpeed(double acceptableError){
     double currentSpeed = flyEncoder.getVelocity(); // Get the current speed of the flywheel
     if (Math.abs(speedTarget - currentSpeed) <= acceptableError){ // Is the current speed within the acceptable error?
       return true; // if so, true.

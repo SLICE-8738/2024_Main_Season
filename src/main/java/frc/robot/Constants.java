@@ -50,6 +50,7 @@ public final class Constants {
     public static final double AIM_KP = 0.1;
     public static final double AIM_KI = 0;
     public static final double AIM_KD = 0;
+    public static final double ERROR_THRESHOLD = 0.5;
 
     // Flywheel Speed
     public static final double FLYWHEEL_RPM = 60;
