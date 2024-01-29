@@ -36,7 +36,7 @@ public class ReverseShooterCommand extends Command {
   @Override
   public void execute() {
     // If a note is detected as stored, remember this
-    if (!noteDetected && m_indexer.isStored()) {
+    if (!noteDetected && m_indexer.isStoredFully()) {
       noteDetected = true;
     } 
 
@@ -54,6 +54,6 @@ public class ReverseShooterCommand extends Command {
   public boolean isFinished() {
     // Stops the command when the note was detected before but isn't any longer
     // This means it has completely passed through the shooter flywheels into the indexer
-    return noteDetected && !m_indexer.isStored();
+    return noteDetected && !m_indexer.isStoredFully();
   }
 }
