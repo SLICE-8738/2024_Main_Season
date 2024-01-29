@@ -5,6 +5,9 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.ShooterMath;
@@ -20,12 +23,25 @@ public class PrepareShooterCommand extends Command {
   Shooter m_shooter;
   Indexer m_indexer;
   Drivetrain m_drivetrain;
+
+  ShuffleboardTab shooterTab;
+  SimpleWidget shooterAngleWidget;
+  SimpleWidget distanceToSpeakerWidget;
+  SimpleWidget getFlywheelVelocityWidget;
+
   /** Creates a new ShootCommand. */
   public PrepareShooterCommand(Shooter shooter, Indexer indexer, Drivetrain drivetrain) {
     m_shooter = shooter;
     m_indexer = indexer;
     m_drivetrain = drivetrain;
 
+    // Creating the Shuffleboard Tab and Widgets
+    Shuffleboard.getTab("Shooter Tab");
+    shooterAngleWidget = shooterTab.add("Shooter Angle: ", "N/A");
+    distanceToSpeakerWidget = shooterTab.add("Distance to Speaker: ", "N/A");
+    getFlywheelVelocityWidget = shooterTab.add("Flywheel Velocity: ", 0);
+
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
     addRequirements(indexer);
@@ -47,6 +63,12 @@ public class PrepareShooterCommand extends Command {
     // Sets the flywheel speed and aim angle to the appropriate values 
     m_shooter.spinFlywheel(shotDetails.getFlywheelVelocity());
     m_shooter.aimShooter(shotDetails.getShooterAngle());
+    
+    //
+    shooterAngleWidget.getEntry().setDouble(shotDetails.getShooterAngle()); // Outputs the shooter angle to Shuffleboard
+    distanceToSpeakerWidget.getEntry().getDouble(distanceToSpeaker); // Gets the distance from speaker as an input from the Shuffleboard
+    getFlywheelVelocityWidget.getEntry().getDouble(shotDetails.getFlywheelVelocity()); // Gets the flywheel velocity as an input from the Shuffleboard
+    
   }
 
   // Called once the command ends or is interrupted.

@@ -11,7 +11,7 @@ import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import frc.robot.ShooterMath.ShotDetails;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -176,7 +176,7 @@ public class ShuffleboardData {
     }
 
     public class ShooterData{
-        public ShooterData(Shooter shooter){
+        public ShooterData(Shooter shooter, ShotDetails shotDetails){
             //Displays Flywheel speed
             debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
             withPosition(9,0).
