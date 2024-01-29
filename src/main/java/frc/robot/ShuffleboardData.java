@@ -14,12 +14,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shooter;
 /** Contains and runs all code needed to display all necessary information on Shuffleboard.*/
 public class ShuffleboardData {
 
     private final ShuffleboardTab driverTab, debugTab, modulesTab, autoTab;
 
-    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer) {
+    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer, Shooter shooter) {
 
         driverTab = Shuffleboard.getTab("Driver Tab");
         debugTab = Shuffleboard.getTab("Debug Tab");
@@ -170,6 +171,20 @@ public class ShuffleboardData {
             withPosition(7,2).
             withSize(2,1);
 
+        }
+    }
+
+    public class ShooterData{
+        public ShooterData(Shooter shooter){
+            //Displays Flywheel speed
+            debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
+            withPosition(9,0).
+            withSize(2,1);
+            
+            //Displays if the flywheels are at the target speed
+            debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
+            withPosition(9,1).
+            withSize(2, 1);
         }
     }
 
