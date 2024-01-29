@@ -62,7 +62,6 @@ public class PrepareShooterCommand extends Command {
     ShotDetails shotDetails = ShooterMath.getShot(distanceToSpeaker);
     // Sets the flywheel speed and aim angle to the appropriate values 
     m_shooter.spinFlywheel(shotDetails.getFlywheelVelocity());
-    m_shooter.aimShooter(shotDetails.getShooterAngle());
     
     //
     shooterAngleWidget.getEntry().setDouble(shotDetails.getShooterAngle()); // Outputs the shooter angle to Shuffleboard
