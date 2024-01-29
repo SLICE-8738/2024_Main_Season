@@ -118,6 +118,10 @@ public class Shooter extends SubsystemBase {
     return false; // otherwise, false
   }
 
+  public double getFlywheelSpeed(){
+    return flyEncoder.getVelocity();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
