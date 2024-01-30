@@ -21,30 +21,20 @@ import frc.robot.subsystems.Shooter;
  */
 public class PrepareShooterCommand extends Command {
   Shooter m_shooter;
-  Indexer m_indexer;
-  Drivetrain m_drivetrain;
 
-  ShuffleboardTab shooterTab;
-  SimpleWidget shooterAngleWidget;
-  SimpleWidget distanceToSpeakerWidget;
-  SimpleWidget getFlywheelVelocityWidget;
-
+  ShuffleboardTab shooterTestTab;
+  SimpleWidget velocityMultiplierWidget, distanceWidget, angleWidget;
   /** Creates a new ShootCommand. */
-  public PrepareShooterCommand(Shooter shooter, Indexer indexer, Drivetrain drivetrain) {
+  public PrepareShooterCommand(Shooter shooter) {
     m_shooter = shooter;
-    m_indexer = indexer;
-    m_drivetrain = drivetrain;
 
-    // Creating the Shuffleboard Tab and Widgets
-    Shuffleboard.getTab("Shooter Tab");
-    shooterAngleWidget = shooterTab.add("Shooter Angle: ", "N/A");
-    distanceToSpeakerWidget = shooterTab.add("Distance to Speaker: ", "N/A");
-    getFlywheelVelocityWidget = shooterTab.add("Flywheel Velocity: ", 0);
+    shooterTestTab = Shuffleboard.getTab("Shooter Testing");
+    velocityMultiplierWidget = shooterTestTab.add("Flywheel Velocity Multiplier", 0);
+    distanceWidget = shooterTestTab.add("Robot Distance", 0);
+    angleWidget = shooterTestTab.add("Desired Shooter Angle", 0);
 
-    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
-    addRequirements(indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -55,19 +45,19 @@ public class PrepareShooterCommand extends Command {
   @Override
   public void execute() {
     // Figures our the current position
-    Translation2d currentPosition = m_drivetrain.getPose().getTranslation();
+    //Translation2d currentPosition = m_drivetrain.getPose().getTranslation();
     // Determines distance to the speaker
-    double distanceToSpeaker = currentPosition.getDistance(Constants.kFieldPositions.SPEAKER_POSITION);
+    //double distanceToSpeaker = currentPosition.getDistance(Constants.kFieldPositions.SPEAKER_POSITION);
+    double distanceToSpeaker = distanceWidget.getEntry().getDouble(0);
+
     // Uses distance info the calculate optimal shot
     ShotDetails shotDetails = ShooterMath.getShot(distanceToSpeaker);
     // Sets the flywheel speed and aim angle to the appropriate values 
-    m_shooter.spinFlywheel(shotDetails.getFlywheelVelocity());
+    double multiplier = velocityMultiplierWidget.getEntry().getDouble(1);
+    m_shooter.spinFlywheel(shotDetails.getFlywheelVelocity() * multiplier);
     
-    //
-    shooterAngleWidget.getEntry().setDouble(shotDetails.getShooterAngle()); // Outputs the shooter angle to Shuffleboard
-    distanceToSpeakerWidget.getEntry().getDouble(distanceToSpeaker); // Gets the distance from speaker as an input from the Shuffleboard
-    getFlywheelVelocityWidget.getEntry().getDouble(shotDetails.getFlywheelVelocity()); // Gets the flywheel velocity as an input from the Shuffleboard
     
+    angleWidget.getEntry().setDouble(shotDetails.getShooterAngle());
   }
 
   // Called once the command ends or is interrupted.

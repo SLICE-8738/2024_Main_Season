@@ -30,28 +30,36 @@ import frc.robot.Constants.kShooter;
  */
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private CANSparkMax flywheel; // Create the flywheel motor
+  private CANSparkMax flywheelTop, flywheelBottom; // Create the flywheel motor
   private CANSparkMax aimMotor; // Create the aiming motor
-  private RelativeEncoder flyEncoder; // Encoder for both...
+  private RelativeEncoder flyTopEncoder, flyBottomEncoder; // Encoder for both...
   private RelativeEncoder aimEncoder; // ...
-  private SparkPIDController flyPID; // PIDs for both...
+  private SparkPIDController flyTopPID, flyBottomPID; // PIDs for both...
   private SparkPIDController aimPID; // ...
   private double speedTarget; // Target speed of flywheel
   private double angleTarget; // Target angle of shooter
 
   public Shooter() {
     // Define the above objects
-    flywheel = new CANSparkMax(0, MotorType.kBrushless);
+    flywheelTop = new CANSparkMax(18, MotorType.kBrushless);
+    flywheelBottom = new CANSparkMax(17, MotorType.kBrushless);
+
     aimMotor = new CANSparkMax(0, MotorType.kBrushless);
-    flyEncoder = flywheel.getEncoder();
+    flyTopEncoder = flywheelTop.getEncoder();
+    flyBottomEncoder = flywheelBottom.getEncoder();
     aimEncoder = aimMotor.getEncoder();
-    flyPID = flywheel.getPIDController();
+    flyTopPID = flywheelTop.getPIDController();
+    flyBottomPID = flywheelBottom.getPIDController();
     aimPID = aimMotor.getPIDController();
     
     // Set PID of flywheel and aim motors.
-    flyPID.setP(kShooter.FLYWHEEL_KP);
-    flyPID.setI(kShooter.FLYWHEEL_KI);
-    flyPID.setD(kShooter.FLYWHEEL_KD);
+    flyTopPID.setP(kShooter.FLYWHEEL_KP);
+    flyTopPID.setI(kShooter.FLYWHEEL_KI);
+    flyTopPID.setD(kShooter.FLYWHEEL_KD);
+
+    flyBottomPID.setP(kShooter.FLYWHEEL_KP);
+    flyBottomPID.setI(kShooter.FLYWHEEL_KI);
+    flyBottomPID.setD(kShooter.FLYWHEEL_KD);
 
     aimPID.setP(kShooter.AIM_KP);
     aimPID.setI(kShooter.AIM_KI);
@@ -64,7 +72,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinFlywheel(double speed){
     speedTarget = speed;
-    flyPID.setReference(speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
+    flyTopPID.setReference(speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
+    flyBottomPID.setReference(-speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
   }
 
   /**
@@ -72,7 +81,9 @@ public class Shooter extends SubsystemBase {
    * @param speed power to run the flywheel at from -1 to 1
    */
   public void dutyCycleSpinFlywheel(double speed) {
-    flywheel.set(speed);
+    flywheelTop.set(speed);
+    flywheelBottom.set(speed);
+
   }
 
   /**
@@ -90,12 +101,20 @@ public class Shooter extends SubsystemBase {
    * @return True if at the correct speed, false otherwise.
    */
   public boolean atTargetSpeed(double acceptableError){
-    double currentSpeed = flyEncoder.getVelocity(); // Get the current speed of the flywheel
+    double currentSpeed = flyTopEncoder.getVelocity(); // Get the current speed of the flywheel
+    currentSpeed = (currentSpeed + flyBottomEncoder.getVelocity()) / 2; // Get the current speed of the other flywheel and average
     if (Math.abs(speedTarget - currentSpeed) <= acceptableError){ // Is the current speed within the acceptable error?
       return true; // if so, true.
     }
     return false; // otherwise, false.
   }
+
+  public double getFlywheelSpeed() {
+    double currentSpeed = flyTopEncoder.getVelocity(); // Get the current speed of the flywheel
+    currentSpeed = (currentSpeed + flyBottomEncoder.getVelocity()) / 2; // Get the current speed of the other flywheel and average
+    return currentSpeed;
+  }
+
 
   /**
    * This function detects if the shooter is at the target angle, within an acceptable error. If it is, the function returns true.
@@ -116,10 +135,6 @@ public class Shooter extends SubsystemBase {
       return true; // if so, true.
     }
     return false; // otherwise, false
-  }
-
-  public double getFlywheelSpeed(){
-    return flyEncoder.getVelocity();
   }
 
   @Override

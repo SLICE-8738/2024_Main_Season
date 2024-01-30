@@ -176,7 +176,7 @@ public class ShuffleboardData {
     }
 
     public class ShooterData{
-        public ShooterData(Shooter shooter, ShotDetails shotDetails){
+        public ShooterData(Shooter shooter){
             //Displays Flywheel speed
             debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
             withPosition(9,0).
