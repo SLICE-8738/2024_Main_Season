@@ -20,16 +20,13 @@ public class ShuffleboardData {
 
     private final ShuffleboardTab driverTab, debugTab, modulesTab, autoTab;
 
-    public ShuffleboardData(Drivetrain drivetrain, AutoSelector autoSelector, Indexer indexer, Shooter shooter) {
+    public ShuffleboardData(Shooter shooter) {
 
         driverTab = Shuffleboard.getTab("Driver Tab");
         debugTab = Shuffleboard.getTab("Debug Tab");
         modulesTab = Shuffleboard.getTab("Modules Tab");
         autoTab = Shuffleboard.getTab("Auto Tab");
 
-        new DrivetrainData(drivetrain);
-        new AutoData(autoSelector);
-        new IndexerData(indexer);
         new ShooterData(shooter);
     }
 

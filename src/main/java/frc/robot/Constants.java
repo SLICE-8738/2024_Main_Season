@@ -44,10 +44,14 @@ public final class Constants {
 
   public static final class kShooter {
 
-    public static final double FLYWHEEL_KP = 0.1;
-    public static final double FLYWHEEL_KI = 0;
+    public static final double FLYWHEEL_KP = 0.0007;
+    public static final double FLYWHEEL_KI = 0.000001;
     public static final double FLYWHEEL_KD = 0;
-    public static final double AIM_KP = 0.1;
+
+
+
+    // NO
+    public static final double AIM_KP = 0;
     public static final double AIM_KI = 0;
     public static final double AIM_KD = 0;
     public static final double ERROR_THRESHOLD = 0.5;

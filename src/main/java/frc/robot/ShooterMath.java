@@ -48,7 +48,7 @@ public final class ShooterMath {
         }
 
         public double getFlywheelVelocity() {
-            return getLaunchVelocity();
+            return getLaunchVelocity() * (15 * 39.37) / Math.PI;
         }
     }
 

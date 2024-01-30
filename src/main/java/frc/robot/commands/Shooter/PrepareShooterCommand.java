@@ -23,7 +23,7 @@ public class PrepareShooterCommand extends Command {
   Shooter m_shooter;
 
   ShuffleboardTab shooterTestTab;
-  SimpleWidget velocityMultiplierWidget, distanceWidget, angleWidget;
+  SimpleWidget velocityMultiplierWidget, distanceWidget, angleWidget, desiredSpeedWidget;
   /** Creates a new ShootCommand. */
   public PrepareShooterCommand(Shooter shooter) {
     m_shooter = shooter;
@@ -32,6 +32,7 @@ public class PrepareShooterCommand extends Command {
     velocityMultiplierWidget = shooterTestTab.add("Flywheel Velocity Multiplier", 0);
     distanceWidget = shooterTestTab.add("Robot Distance", 0);
     angleWidget = shooterTestTab.add("Desired Shooter Angle", 0);
+    desiredSpeedWidget = shooterTestTab.add("Desired Flywheel Speed", 0); 
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -54,9 +55,10 @@ public class PrepareShooterCommand extends Command {
     ShotDetails shotDetails = ShooterMath.getShot(distanceToSpeaker);
     // Sets the flywheel speed and aim angle to the appropriate values 
     double multiplier = velocityMultiplierWidget.getEntry().getDouble(1);
-    m_shooter.spinFlywheel(shotDetails.getFlywheelVelocity() * multiplier);
+    double speed = shotDetails.getFlywheelVelocity() * multiplier;
+    m_shooter.spinFlywheel(speed);
     
-    
+    desiredSpeedWidget.getEntry().setDouble(speed);
     angleWidget.getEntry().setDouble(shotDetails.getShooterAngle());
   }
 

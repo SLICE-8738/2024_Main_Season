@@ -72,7 +72,7 @@ public class Shooter extends SubsystemBase {
    */
   public void spinFlywheel(double speed){
     speedTarget = speed;
-    flyTopPID.setReference(speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
+    flyTopPID.setReference(-speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
     flyBottomPID.setReference(-speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
   }
 
@@ -81,8 +81,8 @@ public class Shooter extends SubsystemBase {
    * @param speed power to run the flywheel at from -1 to 1
    */
   public void dutyCycleSpinFlywheel(double speed) {
-    flywheelTop.set(speed);
-    flywheelBottom.set(speed);
+    flywheelTop.set(-speed);
+    flywheelBottom.set(-speed);
 
   }
 

@@ -22,6 +22,8 @@ public class RobotContainer {
     
   PrepareShooterCommand shooterCommand = new PrepareShooterCommand(shooter);
 
+  ShuffleboardData data = new ShuffleboardData(shooter);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
