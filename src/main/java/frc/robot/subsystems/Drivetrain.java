@@ -48,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
 
   public final SendableChooser<SwerveModule> testModuleChooser = new SendableChooser<SwerveModule>();
 
-  private final Limelight drivetrainLimelight;
+  private final LimelightTable drivetrainLimelight;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -91,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
     testModuleChooser.addOption("Right Front", swerveMods[2]);
     testModuleChooser.addOption("Right Back", swerveMods[3]);
 
-    drivetrainLimelight = new Limelight("limelight-slice");
+    drivetrainLimelight = new LimelightTable("limelight-slice");
 
   }
 

@@ -6,15 +6,16 @@ package frc.robot;
 
 import java.util.Map;
 
-import au.grapplerobotics.LaserCan;
 //import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.ShooterMath.ShotDetails;
+
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Limelights;
 import frc.robot.subsystems.Shooter;
+
 /** Contains and runs all code needed to display all necessary information on Shuffleboard.*/
 public class ShuffleboardData {
 
@@ -118,7 +119,7 @@ public class ShuffleboardData {
             withSize(3, 3);*/
 
             //Displays the feed from the Limelight on Shuffleboard
-            driverTab.addCamera("Limelight", "limelight-slice-1", "http://10.87.38.73:5800").
+            driverTab.addCamera("Shooter Limelight", "limelight-shooter-1", "http://10.87.38.178:5800").
             withPosition(5, 0).
             withSize(3, 3);
 
@@ -175,14 +176,15 @@ public class ShuffleboardData {
     public class ShooterData{
         public ShooterData(Shooter shooter){
             //Displays Flywheel speed
-            debugTab.addDouble("Flywheel Speed:", () -> shooter.getFlywheelSpeed()).
+            debugTab.addDouble("Flywheel Speed:", shooter::getFlywheelSpeed).
             withPosition(9,0).
             withSize(2,1);
             
             //Displays if the flywheels are at the target speed
             debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
-            withPosition(9,1).
+            withPosition(9, 1).
             withSize(2, 1);
+
         }
     }
 

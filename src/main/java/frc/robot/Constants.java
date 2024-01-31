@@ -44,7 +44,7 @@ public final class Constants {
 
   public static final class kShooter {
 
-    public static final double FLYWHEEL_KP = 0.0007;
+    public static final double FLYWHEEL_KP = 0.00007;
     public static final double FLYWHEEL_KI = 0.000001;
     public static final double FLYWHEEL_KD = 0;
 
@@ -72,7 +72,7 @@ public final class Constants {
     public static final double LAUNCH_ANGLE_TO_SHOOTER_ANGLE = 180 - (270 - Constants.kShooter.ANGLE_BETWEEN_FLYWHEELS - Constants.kShooter.ANGLE_BETWEEN_HIGH_FLYWHEEL_AND_PIVOT);
 
     public static final double PIVOT_Y = 0; // Hieght of the shooter pivot from "robot center"
-    public static final double PIVOT_X = 0; // Distance (front to back) of the shooter pivot from "robot center"
+    public static final double PIVOT_X = 0.05715; // Distance (front to back) of the shooter pivot from "robot center"
 
     public static final double FLYWHEEL_RPM_ACCEPTABLE_ERROR = 5; // The maximum error allowed in the flywheel RPM
     public static final double VERTICAL_AIM_ACCEPTABLE_ERROR = 2; // The maximum error allowed in the shooter angle vertically, in degrees

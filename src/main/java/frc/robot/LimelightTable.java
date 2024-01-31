@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /** Class for interfacing with a Limelight connected to NetworkTables. */
-public class Limelight {
+public class LimelightTable {
 
   private final NetworkTable table;
   
@@ -25,8 +25,8 @@ public class Limelight {
   private double[] lastNonEmptyBotPoseBlue = {8.28, 4, 0, 0, 0, 0};
   private double[] currentRobotTargetSpacePose;
   private double[] lastRobotTargetSpacePose = new double[0];
-  private double[] currentTargetCameraSpacePose;
-  private double[] lastTargetCameraSpacePose = new double[0];
+  private double[] currentCameraTargetSpacePose;
+  private double[] lastCameraTargetSpacePose = new double[0];
 
   private static double currentAprilTagID;
 
@@ -39,7 +39,7 @@ public class Limelight {
    * 
    * @param tableKey The key/name assigned to the desired Limglight on NetworkTables.
    */
-  public Limelight(String tableKey) {
+  public LimelightTable(String tableKey) {
     
     table = NetworkTableInstance.getDefault().getTable(tableKey);
 
@@ -83,13 +83,13 @@ public class Limelight {
 
     }
 
-    currentTargetCameraSpacePose = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
+    currentCameraTargetSpacePose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
 
-    if(currentTargetCameraSpacePose != null) {
+    if(currentCameraTargetSpacePose != null) {
 
-      if(currentTargetCameraSpacePose.length != 0) {
+      if(currentCameraTargetSpacePose.length != 0) {
 
-        lastTargetCameraSpacePose = currentTargetCameraSpacePose;
+        lastCameraTargetSpacePose = currentCameraTargetSpacePose;
 
       }
 
@@ -182,9 +182,9 @@ public class Limelight {
    * @return The last received non-empty camera pose with the target as the origin if any.
    *         Null if none has been received yet.
    */
-  public Pose2d getTargetCameraSpacePose() {
+  public Pose2d getCameraTargetSpacePose() {
 
-    double[] lastTargetCameraSpacePose = this.lastTargetCameraSpacePose;
+    double[] lastTargetCameraSpacePose = this.lastCameraTargetSpacePose;
 
     if(lastTargetCameraSpacePose.length != 0) {
 

@@ -15,12 +15,16 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS.SerialDataType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.kShooter;
@@ -36,8 +40,10 @@ public class Shooter extends SubsystemBase {
   private RelativeEncoder aimEncoder; // ...
   private SparkPIDController flyTopPID, flyBottomPID; // PIDs for both...
   private SparkPIDController aimPID; // ...
+  private SimpleMotorFeedforward flyFeedforward;
   private double speedTarget; // Target speed of flywheel
   private double angleTarget; // Target angle of shooter
+  private AHRS gyro;
 
   public Shooter() {
     // Define the above objects
@@ -51,6 +57,7 @@ public class Shooter extends SubsystemBase {
     flyTopPID = flywheelTop.getPIDController();
     flyBottomPID = flywheelBottom.getPIDController();
     aimPID = aimMotor.getPIDController();
+    flyFeedforward = new SimpleMotorFeedforward(0, 0.002);
     
     // Set PID of flywheel and aim motors.
     flyTopPID.setP(kShooter.FLYWHEEL_KP);
@@ -64,6 +71,9 @@ public class Shooter extends SubsystemBase {
     aimPID.setP(kShooter.AIM_KP);
     aimPID.setI(kShooter.AIM_KI);
     aimPID.setD(kShooter.AIM_KD);
+
+    //gyro = new AHRS(Port.kUSB);
+    //gyro.setAngleAdjustment(10);
   }
 
   /**
@@ -72,8 +82,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinFlywheel(double speed){
     speedTarget = speed;
-    flyTopPID.setReference(-speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
-    flyBottomPID.setReference(-speed, ControlType.kVelocity); // Spin up the flywheel to the target speed.
+    flyTopPID.setReference(-speed, ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
+    flyBottomPID.setReference(-speed, ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
   }
 
   /**
@@ -135,6 +145,12 @@ public class Shooter extends SubsystemBase {
       return true; // if so, true.
     }
     return false; // otherwise, false
+  }
+
+  public double getAngle() {
+
+    return gyro.getYaw();
+
   }
 
   @Override
