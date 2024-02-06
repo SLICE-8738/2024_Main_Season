@@ -10,22 +10,23 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+//import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Limelights;
+//import frc.robot.subsystems.Limelights;
 import frc.robot.subsystems.Shooter;
 
 /** Contains and runs all code needed to display all necessary information on Shuffleboard.*/
 public class ShuffleboardData {
 
-    private final ShuffleboardTab driverTab, debugTab, modulesTab, autoTab;
+    private final ShuffleboardTab driverTab, debugTab, modulesTab, shooterTestTab, autoTab;
 
     public ShuffleboardData(Shooter shooter) {
 
         driverTab = Shuffleboard.getTab("Driver Tab");
         debugTab = Shuffleboard.getTab("Debug Tab");
         modulesTab = Shuffleboard.getTab("Modules Tab");
+        shooterTestTab = Shuffleboard.getTab("Shooter Testing");
         autoTab = Shuffleboard.getTab("Auto Tab");
 
         new ShooterData(shooter);
@@ -174,16 +175,27 @@ public class ShuffleboardData {
     }
 
     public class ShooterData{
+
         public ShooterData(Shooter shooter){
             //Displays Flywheel speed
-            debugTab.addDouble("Flywheel Speed:", shooter::getFlywheelSpeed).
+            shooterTestTab.addDouble("Flywheel Speed:", shooter::getFlywheelSpeed).
             withPosition(9,0).
             withSize(2,1);
             
             //Displays if the flywheels are at the target speed
-            debugTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
+            shooterTestTab.addBoolean("At Target Speed:", () -> shooter.atTargetSpeed(Constants.kShooter.ERROR_THRESHOLD)).
             withPosition(9, 1).
             withSize(2, 1);
+
+            /*shooterTestTab.addDouble("Original Desired Velocity", () -> ShooterMath.getShot(Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ()).getFlywheelVelocity());
+
+            final SimpleWidget velocityMultiplierWidget = shooterTestTab.add("Flywheel Velocity Multiplier", 0);
+
+            shooterTestTab.addDouble("Limelight Distance", () -> Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ());
+
+            shooterTestTab.addDouble("Desired Angle", () -> ShooterMath.getShot(Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ()).getShooterAngle());
+
+            shooterTestTab.addDouble("Desired Velocity", () -> ShooterMath.getShot(Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ()).getFlywheelVelocity() * velocityMultiplierWidget.getEntry().getDouble(0));*/
 
         }
     }

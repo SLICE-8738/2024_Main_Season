@@ -52,7 +52,8 @@ public class PrepareShooterCommand extends Command {
     //Translation2d currentPosition = m_drivetrain.getPose().getTranslation();
     // Determines distance to the speaker
     //double distanceToSpeaker = currentPosition.getDistance(Constants.kFieldPositions.SPEAKER_POSITION);
-    double distanceToSpeaker = Limelights.getShooterLimelight().getCameraTargetSpacePose().getX();
+    //double distanceToSpeaker = Limelights.getShooterLimelight().getCameraTargetSpacePose().getX();
+    double distanceToSpeaker = Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ();
     distanceWidget.getEntry().setDouble(distanceToSpeaker);
 
     // Uses distance info the calculate optimal shot
@@ -70,7 +71,11 @@ public class PrepareShooterCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    m_shooter.stopFlywheel();
+
+  }
 
   // Returns true when the command should end.
   @Override

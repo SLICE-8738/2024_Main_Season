@@ -25,6 +25,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.kShooter;
@@ -45,19 +48,26 @@ public class Shooter extends SubsystemBase {
   private double angleTarget; // Target angle of shooter
   private AHRS gyro;
 
+  private ShuffleboardTab shooterTesting;
+  private SimpleWidget differential;
+
   public Shooter() {
+
+    shooterTesting = Shuffleboard.getTab("Shooter Testing");
+    differential = shooterTesting.add("Differential Testing: Top Flywheel", 0);
+
     // Define the above objects
     flywheelTop = new CANSparkMax(18, MotorType.kBrushless);
     flywheelBottom = new CANSparkMax(17, MotorType.kBrushless);
 
-    aimMotor = new CANSparkMax(0, MotorType.kBrushless);
+    //aimMotor = new CANSparkMax(0, MotorType.kBrushless);
     flyTopEncoder = flywheelTop.getEncoder();
     flyBottomEncoder = flywheelBottom.getEncoder();
-    aimEncoder = aimMotor.getEncoder();
+    //aimEncoder = aimMotor.getEncoder();
     flyTopPID = flywheelTop.getPIDController();
     flyBottomPID = flywheelBottom.getPIDController();
-    aimPID = aimMotor.getPIDController();
-    flyFeedforward = new SimpleMotorFeedforward(0, 0.002);
+    //aimPID = aimMotor.getPIDController();
+    flyFeedforward = new SimpleMotorFeedforward(0, kShooter.FLYWHEEL_FEED_FORWARD);
     
     // Set PID of flywheel and aim motors.
     flyTopPID.setP(kShooter.FLYWHEEL_KP);
@@ -68,12 +78,14 @@ public class Shooter extends SubsystemBase {
     flyBottomPID.setI(kShooter.FLYWHEEL_KI);
     flyBottomPID.setD(kShooter.FLYWHEEL_KD);
 
-    aimPID.setP(kShooter.AIM_KP);
-    aimPID.setI(kShooter.AIM_KI);
-    aimPID.setD(kShooter.AIM_KD);
+    //aimPID.setP(kShooter.AIM_KP);
+    //aimPID.setI(kShooter.AIM_KI);
+    //aimPID.setD(kShooter.AIM_KD);
 
-    //gyro = new AHRS(Port.kUSB);
+    //gyro = new AHRS(Port.kUSB1);
     //gyro.setAngleAdjustment(10);
+
+    //aimEncoder.setPosition(0);
   }
 
   /**
@@ -81,9 +93,20 @@ public class Shooter extends SubsystemBase {
    * @param speed Target speed.
    */
   public void spinFlywheel(double speed){
+    double differentialMultiplier = differential.getEntry().getDouble(0);
     speedTarget = speed;
-    flyTopPID.setReference(-speed, ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
-    flyBottomPID.setReference(-speed, ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
+    flyTopPID.setReference(speed * (1+differentialMultiplier), ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
+    flyBottomPID.setReference(speed * (1-differentialMultiplier), ControlType.kVelocity, 0, flyFeedforward.calculate(speed)); // Spin up the flywheel to the target speed.
+  }
+
+  /** 
+   * Sets the speed of both flywheels to 0 and cancels any PID setpoints.
+   */
+  public void stopFlywheel() {
+
+    flywheelTop.set(0);
+    flywheelBottom.set(0);
+
   }
 
   /**
@@ -101,8 +124,8 @@ public class Shooter extends SubsystemBase {
    * @param angle Target angle.
    */
   public void aimShooter(double angle){
-    angleTarget = angle;
-    aimPID.setReference(angle, ControlType.kPosition); // Move the shooter to the target angle.
+    // angleTarget = angle;
+    // aimPID.setReference(angle, ControlType.kPosition); // Move the shooter to the target angle.
   }
 
   /**
@@ -132,26 +155,28 @@ public class Shooter extends SubsystemBase {
    * @return True if at the correct angle, false otherwise.
    */
   public boolean detectShooterAngle(double acceptableError){
-    double currentAngle = aimEncoder.getPosition(); // Get the current angle of the shooter
-    if (Math.abs(angleTarget - currentAngle) <= acceptableError){ // Is the current angle within the acceptable error?
-      return true; // if so, true.
-    }
-    return false; // otherwise, false
+    // double currentAngle = aimEncoder.getPosition(); // Get the current angle of the shooter
+    // if (Math.abs(angleTarget - currentAngle) <= acceptableError){ // Is the current angle within the acceptable error?
+    //   return true; // if so, true.
+    // }
+    // return false; // otherwise, false
+    return false;
   }
 
   public boolean isStowed(double acceptableError) {
-    double currentAngle = aimEncoder.getPosition(); // Get the current angle of the shooter
-    if (Math.abs(Constants.kShooter.SHOOTER_STOW_ANGLE - currentAngle) <= acceptableError){ // Is the current angle within the acceptable error?
-      return true; // if so, true.
-    }
-    return false; // otherwise, false
+    // double currentAngle = aimEncoder.getPosition(); // Get the current angle of the shooter
+    // if (Math.abs(Constants.kShooter.SHOOTER_STOW_ANGLE - currentAngle) <= acceptableError){ // Is the current angle within the acceptable error?
+    //   return true; // if so, true.
+    // }
+    // return false; // otherwise, false
+    return false;
   }
 
-  public double getAngle() {
+  //public double getAngle() {
 
-    return gyro.getYaw();
+    //return gyro.getYaw();
 
-  }
+  //}
 
   @Override
   public void periodic() {

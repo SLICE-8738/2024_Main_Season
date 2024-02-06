@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -25,8 +27,8 @@ public class LimelightTable {
   private double[] lastNonEmptyBotPoseBlue = {8.28, 4, 0, 0, 0, 0};
   private double[] currentRobotTargetSpacePose;
   private double[] lastRobotTargetSpacePose = new double[0];
-  private double[] currentCameraTargetSpacePose;
-  private double[] lastCameraTargetSpacePose = new double[0];
+  private double[] currentTargetCameraSpacePose;
+  private double[] lastTargetCameraSpacePose = new double[0];
 
   private static double currentAprilTagID;
 
@@ -83,13 +85,13 @@ public class LimelightTable {
 
     }
 
-    currentCameraTargetSpacePose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
+    currentTargetCameraSpacePose = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
 
-    if(currentCameraTargetSpacePose != null) {
+    if(currentTargetCameraSpacePose != null) {
 
-      if(currentCameraTargetSpacePose.length != 0) {
+      if(currentTargetCameraSpacePose.length != 0) {
 
-        lastCameraTargetSpacePose = currentCameraTargetSpacePose;
+        lastTargetCameraSpacePose = currentTargetCameraSpacePose;
 
       }
 
@@ -182,13 +184,13 @@ public class LimelightTable {
    * @return The last received non-empty camera pose with the target as the origin if any.
    *         Null if none has been received yet.
    */
-  public Pose2d getCameraTargetSpacePose() {
+  public Pose3d getTargetCameraSpacePose() {
 
-    double[] lastTargetCameraSpacePose = this.lastCameraTargetSpacePose;
+    double[] lastTargetCameraSpacePose = this.lastTargetCameraSpacePose;
 
     if(lastTargetCameraSpacePose.length != 0) {
 
-      return new Pose2d(lastTargetCameraSpacePose[0], lastTargetCameraSpacePose[1], Rotation2d.fromDegrees(lastTargetCameraSpacePose[5]));
+      return new Pose3d(lastTargetCameraSpacePose[0], lastTargetCameraSpacePose[1], lastTargetCameraSpacePose[2], new Rotation3d(lastTargetCameraSpacePose[3], lastTargetCameraSpacePose[4], lastTargetCameraSpacePose[5]));
 
     }
     else {
