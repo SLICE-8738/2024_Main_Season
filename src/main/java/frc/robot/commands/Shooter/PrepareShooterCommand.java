@@ -55,7 +55,6 @@ public class PrepareShooterCommand extends Command {
     //double distanceToSpeaker = Limelights.getShooterLimelight().getCameraTargetSpacePose().getX();
     double distanceToSpeaker = Limelights.getShooterLimelight().getTargetCameraSpacePose().getZ();
     distanceWidget.getEntry().setDouble(distanceToSpeaker);
-
     // Uses distance info the calculate optimal shot
     ShotDetails shotDetails = ShooterMath.getShot(distanceToSpeaker);
     // Sets the flywheel speed and aim angle to the appropriate values 

@@ -5,7 +5,7 @@ package frc.robot;
  */
 public final class ShooterMath {
     
-  private static final double OOMF = 1.6;
+  private static final double OOMF = 2;
 
     public static class ShotDetails {
 
