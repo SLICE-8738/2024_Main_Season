@@ -9,13 +9,14 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import frc.robot.commands.Shooter.SpinUpCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -80,7 +81,7 @@ public class AutoSelector {
 
     private final Drivetrain m_drivetrain;
 
-    public AutoSelector(Drivetrain drivetrain) {
+    public AutoSelector(Drivetrain drivetrain, Shooter shooter) {
 
         m_drivetrain = drivetrain;
 
@@ -114,7 +115,7 @@ public class AutoSelector {
             () -> DriverStation.getAlliance().get() == Alliance.Red,
             m_drivetrain);
 
-        //NamedCommands.registerCommand("Align With Speaker", new AlignWithSpeakerCommand(m_drivetrain));
+        NamedCommands.registerCommand("Shooter Spin Up", new SpinUpCommand(shooter));
         
     }
 

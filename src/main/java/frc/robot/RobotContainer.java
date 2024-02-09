@@ -32,9 +32,10 @@ public class RobotContainer {
   // ==========================
 
   public final Drivetrain m_drivetrain = new Drivetrain();
+  public final Shooter m_shooter = new Shooter();
   public final Limelights m_limelights = new Limelights();
 
-  public final AutoSelector m_autoSelector = new AutoSelector(m_drivetrain);
+  public final AutoSelector m_autoSelector = new AutoSelector(m_drivetrain, m_shooter);
   public final ShuffleboardData m_shuffleboardData = new ShuffleboardData(m_drivetrain, m_autoSelector);
 
   // ==========================
