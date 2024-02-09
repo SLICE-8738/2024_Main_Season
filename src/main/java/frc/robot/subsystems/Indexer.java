@@ -78,7 +78,20 @@ public class Indexer extends SubsystemBase {
    * 
    * @return
    */
-  //Method that returns the distance from the laserCAN in millimeters
+  
+  /** Method that checks if a note is at the high index motor */
+  public boolean isStored() {
+    //checks if the laserCan distance is more than 177.9 millimeters or less than 177.9 millimeters
+     if (getLaserCanDistance() <= 177.8) {
+      //if the laserCAN distance is less than 177.9 millimeters, returns true and there is a note at the high index motor
+      return true;
+     } else {
+      //if the laserCAN distance is more than 177.9 millimeters, returns false and there is no note at the high index motor
+      return false;
+     }
+  }
+
+   //Method that returns the distance from the laserCAN in millimeters
   public double getLaserCanDistance() {
     //returns the distance from the laserCAN in millimeters
     return laser.getMeasurement().distance_mm;
