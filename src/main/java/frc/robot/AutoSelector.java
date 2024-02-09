@@ -9,8 +9,15 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.Shooter.PrepareShooterCommand;
+import frc.robot.commands.Shooter.ReverseShooterCommand;
+import frc.robot.commands.Shooter.SpinDownCommand;
+import frc.robot.commands.Shooter.SpinFlywheelCommand;
+import frc.robot.commands.Shooter.AutoShootCommand;
 import frc.robot.commands.Shooter.SpinUpCommand;
+import frc.robot.commands.Shooter.StowShooterCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
@@ -81,7 +88,7 @@ public class AutoSelector {
 
     private final Drivetrain m_drivetrain;
 
-    public AutoSelector(Drivetrain drivetrain, Shooter shooter) {
+    public AutoSelector(Drivetrain drivetrain, Shooter shooter, Indexer indexer) {
 
         m_drivetrain = drivetrain;
 
@@ -116,6 +123,12 @@ public class AutoSelector {
             m_drivetrain);
 
         NamedCommands.registerCommand("Shooter Spin Up", new SpinUpCommand(shooter));
+        NamedCommands.registerCommand("Shooter Prepare", new PrepareShooterCommand(shooter, indexer , drivetrain));
+        NamedCommands.registerCommand("Shooter Reverse", new ReverseShooterCommand(shooter, indexer));
+        NamedCommands.registerCommand("Shooter", new AutoShootCommand(shooter, indexer, drivetrain));
+        NamedCommands.registerCommand("Shooter", new SpinDownCommand(shooter));
+        NamedCommands.registerCommand("Shooter", new SpinFlywheelCommand(shooter, drivetrain));
+        NamedCommands.registerCommand("Shooter", new StowShooterCommand(shooter));
         
     }
 

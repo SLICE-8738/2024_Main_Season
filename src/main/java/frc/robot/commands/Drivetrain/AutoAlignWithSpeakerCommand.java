@@ -12,17 +12,15 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * Maintains driver control of robot translation, but automatically turns to face the speaker.
  */
-public class AlignWithSpeakerCommand extends Command {
+public class AutoAlignWithSpeakerCommand extends Command {
   /** Creates a new SwerveDriveCommand. */
   private final Drivetrain m_drivetrain;
 
-  private final GenericHID m_driverController;
   private final PolarJoystickFilter translationFilter;
 
   private final boolean m_isOpenLoop;
@@ -30,14 +28,12 @@ public class AlignWithSpeakerCommand extends Command {
 
   private final PIDController rotationController;
 
-  public AlignWithSpeakerCommand(Drivetrain drivetrain, GenericHID driverController, boolean isOpenLoop,
+  public AutoAlignWithSpeakerCommand(Drivetrain drivetrain, boolean isOpenLoop,
       boolean isFieldRelative) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
 
     m_drivetrain = drivetrain;
-
-    m_driverController = driverController;
 
     m_isOpenLoop = isOpenLoop;
     m_isFieldRelative = isFieldRelative;
@@ -64,7 +60,7 @@ public class AlignWithSpeakerCommand extends Command {
   @Override
   public void execute() {
 
-    double[] translation = translationFilter.filter(m_driverController.getRawAxis(1), m_driverController.getRawAxis(0));
+    double[] translation = translationFilter.filter(0, 0);
 
     double translationX = translation[0] * Constants.kDrivetrain.MAX_LINEAR_VELOCITY;
     double translationY = translation[1] * Constants.kDrivetrain.MAX_LINEAR_VELOCITY;

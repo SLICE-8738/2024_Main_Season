@@ -7,12 +7,11 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
-import frc.robot.commands.Drivetrain.AlignWithSpeakerCommand;
+import frc.robot.commands.Drivetrain.AutoAlignWithSpeakerCommand;
 import frc.robot.commands.Indexer.NudgeIndexer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
@@ -21,12 +20,12 @@ import frc.robot.subsystems.Shooter;
 /**
  * Prepares the shooter for shooting, aligns the robot with the speaker (while maintaining driver control of translation) and then fires when everything is ready
  */
-public class ShootCommand extends ParallelDeadlineGroup {
+public class AutoShootCommand extends ParallelDeadlineGroup {
   /** Creates a new ShootCommand. */
-  public ShootCommand(Shooter shooter, Indexer indexer, Drivetrain drivetrain, GenericHID driveController) {
+  public AutoShootCommand(Shooter shooter, Indexer indexer, Drivetrain drivetrain) {
     super(new SequentialCommandGroup(new WaitUntilCommand(() -> ready(shooter, indexer, drivetrain)), new NudgeIndexer(indexer)));
     PrepareShooterCommand prepareShooter = new PrepareShooterCommand(shooter, indexer, drivetrain);
-    AlignWithSpeakerCommand alignWithSpeakerCommand = new AlignWithSpeakerCommand(drivetrain, driveController, true, true);
+    AutoAlignWithSpeakerCommand alignWithSpeakerCommand = new AutoAlignWithSpeakerCommand(drivetrain, true, true);
     addCommands(prepareShooter, alignWithSpeakerCommand);
   }
 

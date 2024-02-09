@@ -11,9 +11,11 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 
@@ -210,5 +212,33 @@ public final class Constants {
     public static final double MAXIMUM_SHOOTING_DRIVETRAIN_SPEED = 0.1; // The maximum speed that the drivetrain can move at and shoot
   }
 
+  public static final class kAutonomous {
+
+    public static final double kMaxVelocityMetersPerSecond = 3.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
+    public static final double kMaxAngularVelocityRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI;
+
+    public static final PathConstraints kPathConstraints = new PathConstraints(3.5, 2.5, Math.PI, Math.PI);
+
+    public static final double kPTranslation = 2.5;
+    public static final double kPRotation = 2.5;
+
+    // Constraint for the motion profilied robot angle controller
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        kMaxAngularVelocityRadiansPerSecond, kMaxAngularAccelerationRadiansPerSecondSquared);
+
+    public static final double kPSpeakerAlignRotation = 2.5;
+    public static final double kISpeakerAlignRotation = 0;
+    public static final double kDSpeakerAlignRotation = 0;
+
+  }
+
+  public static final class kFieldPositions {
+    public static final Translation2d SPEAKER_POSITION = new Translation2d(0, 0);
+    public static final Pose2d LEFT_STAGE_ALIGNMENT_POSITION = new Pose2d(0, 0, new Rotation2d());
+    public static final Pose2d RIGHT_STAGE_ALIGNMENT_POSITION = new Pose2d(0, 0, new Rotation2d());
+    public static final Pose2d CENTER_STAGE_ALIGNMENT_POSITION = new Pose2d(0, 0, new Rotation2d());
+  }
 
 }
