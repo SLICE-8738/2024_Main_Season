@@ -13,11 +13,15 @@ import frc.robot.commands.Shooter.PrepareShooterCommand;
 import frc.robot.commands.Shooter.ReverseShooterCommand;
 import frc.robot.commands.Shooter.SpinDownCommand;
 import frc.robot.commands.Shooter.SpinFlywheelCommand;
+import frc.robot.commands.Indexer.NudgeIndexer;
+import frc.robot.commands.Indexer.StoreNote;
+import frc.robot.commands.Intake.SpinIntakeCommand;
 import frc.robot.commands.Shooter.AutoShootCommand;
 import frc.robot.commands.Shooter.SpinUpCommand;
 import frc.robot.commands.Shooter.StowShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 import java.util.Optional;
@@ -88,7 +92,7 @@ public class AutoSelector {
 
     private final Drivetrain m_drivetrain;
 
-    public AutoSelector(Drivetrain drivetrain, Shooter shooter, Indexer indexer) {
+    public AutoSelector(Drivetrain drivetrain, Shooter shooter, Indexer indexer, Intake intake) {
 
         m_drivetrain = drivetrain;
 
@@ -129,6 +133,9 @@ public class AutoSelector {
         NamedCommands.registerCommand("Shooter Spin Down", new SpinDownCommand(shooter));
         NamedCommands.registerCommand("Shooter Spin Flywheel", new SpinFlywheelCommand(shooter, drivetrain));
         NamedCommands.registerCommand("Shooter Stow", new StowShooterCommand(shooter));
+        NamedCommands.registerCommand("Indexer Nudge", new NudgeIndexer(indexer));
+        NamedCommands.registerCommand("Indexer Store Note", new StoreNote(indexer, intake));
+        NamedCommands.registerCommand("Intake Spin", new SpinIntakeCommand(intake, shooter));
         
     }
 
