@@ -125,10 +125,10 @@ public class AutoSelector {
         NamedCommands.registerCommand("Shooter Spin Up", new SpinUpCommand(shooter));
         NamedCommands.registerCommand("Shooter Prepare", new PrepareShooterCommand(shooter, indexer , drivetrain));
         NamedCommands.registerCommand("Shooter Reverse", new ReverseShooterCommand(shooter, indexer));
-        NamedCommands.registerCommand("Shooter", new AutoShootCommand(shooter, indexer, drivetrain));
-        NamedCommands.registerCommand("Shooter", new SpinDownCommand(shooter));
-        NamedCommands.registerCommand("Shooter", new SpinFlywheelCommand(shooter, drivetrain));
-        NamedCommands.registerCommand("Shooter", new StowShooterCommand(shooter));
+        NamedCommands.registerCommand("Shooter Shoot", new AutoShootCommand(shooter, indexer, drivetrain));
+        NamedCommands.registerCommand("Shooter Spin Down", new SpinDownCommand(shooter));
+        NamedCommands.registerCommand("Shooter Spin Flywheel", new SpinFlywheelCommand(shooter, drivetrain));
+        NamedCommands.registerCommand("Shooter Stow", new StowShooterCommand(shooter));
         
     }
 
