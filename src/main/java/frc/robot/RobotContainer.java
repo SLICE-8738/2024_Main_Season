@@ -4,11 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,8 +20,6 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
 
-  private static final PS4Controller driverController = Button.controller1;
-
   // ==========================
   // Subsystems
   // ==========================
@@ -34,20 +27,14 @@ public class RobotContainer {
   public final Drivetrain m_drivetrain = new Drivetrain();
   public final Limelights m_limelights = new Limelights();
 
-  public final AutoSelector m_autoSelector = new AutoSelector(m_drivetrain);
-  public final ShuffleboardData m_shuffleboardData = new ShuffleboardData(m_drivetrain, m_autoSelector);
+  public final ShuffleboardData m_shuffleboardData = new ShuffleboardData(m_drivetrain);
 
   // ==========================
   // Commands
   // ==========================
 
   /* Drivetrain */
-  public final SwerveDriveCommand m_swerveDriveOpenLoop = new SwerveDriveCommand(m_drivetrain, driverController, true, true);
-  public final SwerveDriveCommand m_swerveDriveClosedLoop = new SwerveDriveCommand(m_drivetrain, driverController, false, true);
-  public final SetPercentOutputCommand m_setDrivePercentOutput = new SetPercentOutputCommand(m_drivetrain, 0.1, 0);
-  public final Command m_pathfindToSource = AutoBuilder.pathfindToPose(new Pose2d(1.32, 1.32, Rotation2d.fromDegrees(-120)), Constants.kDrivetrain.PATH_CONSTRAINTS);
-  public final Command m_pathfindToAmp = AutoBuilder.pathfindToPose(new Pose2d(1.84, 7.67, Rotation2d.fromDegrees(90)), Constants.kDrivetrain.PATH_CONSTRAINTS);
-  //public final ConditionalCommand m_limelightAlign = new ConditionalCommand(m_aprilTagAlign, m_noteAlign, noteDetected);
+  public final DriveCommand m_driveCommand = new DriveCommand(m_drivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -55,7 +42,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    m_drivetrain.setDefaultCommand(m_swerveDriveClosedLoop);
+    m_drivetrain.setDefaultCommand(m_driveCommand);
 
   }
 
@@ -70,10 +57,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    /* Drivetrain Bindings */
-    Button.pathfindToSource.whileTrue(m_pathfindToSource);
-    Button.pathfindToAmp.whileTrue(m_pathfindToAmp);
-
   }
 
   /**
@@ -83,7 +66,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return m_autoSelector.getAutoRoutine();
+    return null;
     
   }
 

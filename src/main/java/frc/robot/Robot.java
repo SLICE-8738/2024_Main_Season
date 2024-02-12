@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import frc.slicelibs.util.factories.SparkMaxFactory;
-
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -33,9 +31,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     Timer.delay(0.2);
-    SparkMaxFactory.flashAll();
-
-    m_robotContainer.m_autoSelector.updateAutoSelector();
 
   }
 
@@ -57,19 +52,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {
-
-    m_robotContainer.m_autoSelector.reset();
-    m_robotContainer.m_autoSelector.updateAutoSelector();
-
-  }
+  public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {
-
-    m_robotContainer.m_autoSelector.updateAutoSelector();
-
-  }
+  public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
