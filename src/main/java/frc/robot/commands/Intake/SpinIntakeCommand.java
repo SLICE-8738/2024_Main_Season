@@ -13,11 +13,9 @@ import frc.robot.subsystems.Shooter;
  */
 public class SpinIntakeCommand extends Command {
   private final Intake m_intake;
-  private final Shooter m_shooter;
   /** Creates a new SpinIntakeCommand. */
-  public SpinIntakeCommand(Intake intake, Shooter shooter) {
+  public SpinIntakeCommand(Intake intake) {
     m_intake = intake;
-    m_shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
@@ -36,7 +34,7 @@ public class SpinIntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     // Check if the shooter is stowed
-    if (m_shooter.isStowed(2)) {
+    if (true) {
       // If it is, stop the lower intake wheels but continuing spinning the ramp wheels to send the note into the shooter
       m_intake.runIntakeEntranceOnly(0);
     }else {

@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Intake.SpinIntakeCommand;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -15,6 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  Intake intake = new Intake();
+  SpinIntakeCommand runIntake = new SpinIntakeCommand(intake);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -33,7 +39,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    Button.square2.whileTrue(runIntake);
   }
 
   /**
