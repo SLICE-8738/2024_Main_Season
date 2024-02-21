@@ -42,6 +42,12 @@ public final class Constants {
 
   }
 
+  public static final class kIntake {
+
+    public static final int MOTOR_ID = 10;
+
+  }
+
   public static final class kShooter {
 
     public static final double FLYWHEEL_KP = 0.1;

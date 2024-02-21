@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * An intake pulls in the ring (or "note") that will later be launched.
@@ -15,7 +17,8 @@ public class Intake extends SubsystemBase {
   private CANSparkMax intakeEntrance;//,intakeRamp;
   /** Creates a new Intake. */
   public Intake() {
-    this.intakeEntrance = new CANSparkMax(0, MotorType.kBrushless);
+    this.intakeEntrance = new CANSparkMax(Constants.kIntake.MOTOR_ID, MotorType.kBrushless);
+    intakeEntrance.setInverted(false);
     //this.intakeRamp = new CANSparkMax(0, MotorType.kBrushless);
   }
 
