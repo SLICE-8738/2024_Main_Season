@@ -7,8 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Indexer.NudgeIndexer;
+import frc.robot.commands.Indexer.StoreNote;
 import frc.robot.commands.Intake.SpinIntakeCommand;
+import frc.robot.commands.Shooter.ShootCommand;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,8 +24,17 @@ import frc.robot.subsystems.Intake;
  */
 public class RobotContainer {
 
+  Drivetrain m_Drivetrain = new Drivetrain();
+
   Intake intake = new Intake();
   SpinIntakeCommand runIntake = new SpinIntakeCommand(intake);
+
+  Indexer m_Indexer = new Indexer();
+  NudgeIndexer m_NudgeIndexer = new NudgeIndexer(m_Indexer);
+  StoreNote m_StoreNote = new StoreNote(m_Indexer, intake);
+
+  Shooter m_Shooter = new Shooter();
+  ShootCommand m_ShooterCommand = new ShootCommand(m_Shooter, m_Indexer, m_Drivetrain, Button.controller2);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -40,6 +55,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Button.square2.whileTrue(runIntake);
+    Button.cross2.onTrue(m_NudgeIndexer);
+    Button.circle2.onTrue(m_StoreNote);
+    Button.leftTrigger2.whileTrue(m_ShooterCommand);
   }
 
   /**
